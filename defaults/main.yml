@@ -1,0 +1,19 @@
+---
+consul_user: 'consul'
+consul_group: 'consul'
+consul_create_account: true
+
+consul_home_directory: '/etc/consul.d'
+consul_data_directory: '/opt/consul'
+consul_install_directory: '{{ consul_data_directory }}/bin'
+consul_config_file: '{{ consul_home_directory }}/consul.hcl'
+consul_server_file: '{{ consul_home_directory }}/server.hcl'
+
+consul_version: '1.7.1'
+consul_archive: 'consul_{{ consul_version }}_linux_amd64.zip'
+consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}'
+
+consul_datacenter: 'Arctiq'
+consul_raft_multiplier: 1
+consul_ui: true
+consul_client_addr: '0.0.0.0'

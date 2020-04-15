@@ -1,0 +1,9 @@
+datacenter = "{{ consul_datacenter }}"
+data_dir = "{{ consul_data_directory }}"
+
+retry_join = ["provider=gce tag_value=consul"]
+client_addr = "{{ consul_client_addr }}"
+
+performance {
+  raft_multiplier = {{ consul_raft_multiplier }}
+}

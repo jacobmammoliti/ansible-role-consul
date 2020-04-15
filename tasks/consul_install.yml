@@ -1,0 +1,82 @@
+---
+    - name: install consul dependencies
+      package:
+        name:
+          - unzip
+          - curl
+        state: present
+    
+    - name: creating consul group
+      group:
+        name: '{{ consul_group }}'
+        system: yes
+      when: consul_create_account
+      
+    - name: creating consul user
+      user:
+        name: '{{ consul_user }}'
+        home: '{{ consul_home_directory }}'
+        group: '{{ consul_group }}'
+        shell: /bin/false
+        system: yes
+      when: consul_create_account
+    
+    - name: creating consul directories
+      file:
+        state: directory
+        path: '{{ item }}'
+        owner: '{{ consul_user }}'
+        group: '{{ consul_group }}'
+        mode: '0750'
+      with_items:
+      - '{{ consul_home_directory }}'
+      - '{{ consul_data_directory }}'
+      - '{{ consul_install_directory }}'
+    
+    - name: installing consul binary
+      unarchive:
+        src: '{{ consul_download }}'
+        dest: '{{ consul_install_directory }}'
+        owner: '{{ consul_user }}'
+        group: '{{ consul_group }}'
+        remote_src: yes
+        mode: '0770'
+      notify:
+        - restart consul
+    
+    - name: templating out consul configuration
+      template:
+        src: consul.hcl.j2
+        dest: '{{ consul_config_file }}'
+        owner: '{{ consul_user }}'
+        group: '{{ consul_group }}'
+        mode: '0640'
+      notify:
+        - restart consul
+    
+    - name: templating out consul server configuration
+      template:
+        src: server.hcl.j2
+        dest: '{{ consul_server_file }}'
+        owner: '{{ consul_user }}'
+        group: '{{ consul_group }}'
+        mode: '0640'
+      when: "'servers' in group_names"
+      notify:
+        - restart consul
+    
+    - name: templating out systemd script
+      template:
+        src: consul.systemd.j2
+        dest: /etc/systemd/system/consul.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - reload consul daemon
+    
+    - name: starting and enabling consul
+      systemd:
+        name: consul
+        enabled: yes
+        state: started
