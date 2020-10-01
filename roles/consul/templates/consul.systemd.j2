@@ -11,6 +11,7 @@ User=consul
 Group=consul
 ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_home_directory }}
 ExecReload={{ consul_install_directory }}/consul reload
+ExecStop=/usr/local/bin/consul leave
 KillMode=process
 Restart=on-failure
 LimitNOFILE=65536

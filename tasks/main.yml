@@ -1,3 +1,0 @@
----
-  - name: installing consul
-    include: consul_install.yml

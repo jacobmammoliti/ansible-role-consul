@@ -1,7 +1,16 @@
 datacenter = "{{ consul_datacenter }}"
 data_dir = "{{ consul_data_directory }}"
 
+{% if provider == 'gce' %}
 retry_join = ["provider=gce tag_value=consul"]
+{% else %}
+retry_join = [
+{% for server in groups[group_names[0]] %}
+  "{{ hostvars[server]['ansible_default_ipv4']['address'] }}"{% if not loop.last %},{% endif %}{{''}}
+{% endfor %}
+]
+{% endif %}
+
 client_addr = "{{ consul_client_addr }}"
 
 performance {

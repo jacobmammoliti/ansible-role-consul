@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/arctiqjacob/ansible-role-vault.svg?branch=master)](https://travis-ci.org/arctiqjacob/ansible-role-vault)
-
 Ansible Role: Consul
 ===================
 
@@ -33,7 +31,7 @@ consul_server_file: '{{ consul_home_directory }}/server.hcl'
 
 The version of Consul to install and where it should download its binary from.
 ```yaml
-consul_version: '1.4.0'
+consul_version: '1.8.4'
 consul_archive: 'consul_{{ consul_version }}_linux_amd64.zip'
 consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}'
 ```
