@@ -1,28 +1,21 @@
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox"
-  config.vm.box = "bento/ubuntu-18.04"
-  config.vm.define "consul-server"
-  config.vm.hostname = "consul-server"
+
+  config.vm.define "consulserver" do |consulserver|
+    consulserver.vm.box = "bento/ubuntu-18.04"
+    consulserver.vm.hostname = "consul-server"
+  end
+
+  config.vm.define "consulclient" do |consulclient|
+    consulclient.vm.box = "bento/ubuntu-18.04"
+    consulclient.vm.hostname = "consul-client"
+  end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "site.yaml"
     ansible.groups = {
-      "servers" => ["consul-server"],
+      "clients" => ["consulclient"],
+      "servers" => ["consulserver"]
     }
   end
 end
-
-Vagrant.configure("2") do |config|
-  config.vm.provider "virtualbox"
-  config.vm.box = "bento/ubuntu-18.04"
-  config.vm.define "consul-client"
-  config.vm.hostname = "consul-client"
-
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "site.yaml"
-    ansible.groups = {
-      "clients" => ["consul-client"],
-    }
-  end
-end
-

@@ -5,13 +5,13 @@ data_dir = "{{ consul_data_directory }}"
 retry_join = ["provider=gce tag_value=consul"]
 {% else %}
 retry_join = [
-{% for server in groups[group_names[0]] %}
+{% for server in groups['servers'] %}
   "{{ hostvars[server]['ansible_default_ipv4']['address'] }}"{% if not loop.last %},{% endif %}{{''}}
 {% endfor %}
 ]
 {% endif %}
 
-client_addr = "{{ consul_client_addr }}"
+client_addr = "0.0.0.0"
 
 performance {
   raft_multiplier = {{ consul_raft_multiplier }}
