@@ -18,5 +18,5 @@ performance {
 }
 
 {% if consul_enable_gossip_encryption %}
-encrypt = {{ consul_gossip_key.stdout }}
+encrypt = "{{ consul_gossip_key.stdout }}"
 {% endif %}
