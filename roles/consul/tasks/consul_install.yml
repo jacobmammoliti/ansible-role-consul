@@ -44,6 +44,11 @@
   notify:
     - restart consul
 
+- name: enabling gossip encryption
+  command: 'consul keygen'
+  register: consul_gossip_key
+  when: consul_enable_gossip_encryption
+
 - name: templating out consul configuration
   template:
     src: consul.hcl.j2

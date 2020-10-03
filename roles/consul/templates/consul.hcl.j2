@@ -16,3 +16,7 @@ client_addr = "0.0.0.0"
 performance {
   raft_multiplier = {{ consul_raft_multiplier }}
 }
+
+{% if consul_enable_gossip_encryption %}
+encrypt = {{ consul_gossip_key.stdout }}
+{% endif %}
