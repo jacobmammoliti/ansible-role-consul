@@ -45,7 +45,7 @@
     - restart consul
 
 - name: enabling gossip encryption
-  command: 'consul keygen'
+  command: '{{ consul_install_directory }}/consul keygen'
   register: consul_gossip_key
   when: consul_enable_gossip_encryption
 
