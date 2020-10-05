@@ -44,10 +44,27 @@
   notify:
     - restart consul
 
-- name: enabling gossip encryption
-  command: '{{ consul_install_directory }}/consul keygen'
-  register: consul_gossip_key
-  when: consul_enable_gossip_encryption
+- name: create TLS directory
+  file:
+    state: directory
+    path: '{{ consul_home_directory }}/tls'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0770'
+  when: consul_enable_tls
+
+- name: copying over TLS certificates
+  copy:
+    src: '{{ item }}'
+    dest: '{{ consul_home_directory }}/tls'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0600'
+  with_items:
+    - ca.pem
+    - cert.pem
+    - key.pem
+  when: consul_enable_tls
 
 - name: templating out consul configuration
   template:

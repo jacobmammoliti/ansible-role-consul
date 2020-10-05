@@ -1,6 +1,19 @@
 datacenter = "{{ consul_datacenter }}"
 data_dir = "{{ consul_data_directory }}"
 
+{% if consul_enable_gossip_encryption %}
+encrypt = "{{ consul_gossip_key.stdout }}"
+{% endif %}
+
+{% if consul_enable_tls %}
+ca_file = "{{ consul_tls_ca_file }}"
+cert_file = "{{ consul_tls_cert_file }}"
+key_file = "{{ consul_tls_key_file }}"
+verify_incoming = {{ consul_tls_verify_incoming | lower }}
+verify_outgoing = {{ consul_tls_verify_outgoing | lower }}
+verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
+{% endif %}
+
 {% if provider == 'gce' %}
 retry_join = ["provider=gce tag_value=consul"]
 {% elif provider == 'no-cloud'%}
@@ -16,7 +29,3 @@ client_addr = "0.0.0.0"
 performance {
   raft_multiplier = {{ consul_raft_multiplier }}
 }
-
-{% if consul_enable_gossip_encryption %}
-encrypt = "{{ consul_gossip_key.stdout }}"
-{% endif %}
