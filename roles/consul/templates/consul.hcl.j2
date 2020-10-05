@@ -3,10 +3,10 @@ data_dir = "{{ consul_data_directory }}"
 
 {% if provider == 'gce' %}
 retry_join = ["provider=gce tag_value=consul"]
-{% else %}
+{% elif provider == 'no-cloud'%}
 retry_join = [
-{% for server in groups['servers'] %}
-  "{{ hostvars[server]['ansible_default_ipv4']['address'] }}"{% if not loop.last %},{% endif %}{{''}}
+{% for server in consul_server_list if not server == ansible_fqdn %}
+  "{{ server }}"{% if not loop.last %},{% endif %}{{''}}
 {% endfor %}
 ]
 {% endif %}
