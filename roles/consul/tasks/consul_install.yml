@@ -65,6 +65,8 @@
     - cert.pem
     - key.pem
   when: consul_enable_tls
+  notify:
+    - restart consul
 
 - name: templating out consul configuration
   template:
