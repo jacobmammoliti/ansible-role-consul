@@ -1,5 +1,6 @@
 ---
 provider: 'no_cloud'
+consul_cloud_tag: 'consul'
 
 consul_user: 'consul'
 consul_group: 'consul'
