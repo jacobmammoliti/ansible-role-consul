@@ -18,8 +18,8 @@ verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
 retry_join = ["provider=gce tag_value={{ consul_cloud_tag }}"]
 {% elif provider == 'no_cloud'%}
 retry_join = [
-{% for server in consul_server_list if not server == ansible_fqdn %}
-  "{{ server }}"{% if not loop.last %},{% endif %}{{''}}
+{% for servers in groups['servers'] %}
+    "{{ hostvars[controller]['ansible_default_ipv4']['address'] }}"{% if not loop.last %},{% endif %}{{''}}
 {% endfor %}
 ]
 {% endif %}
