@@ -1,5 +1,6 @@
 datacenter = "{{ consul_datacenter }}"
 data_dir = "{{ consul_data_directory }}"
+node_name = "{{ ansible_hostname }}"
 
 {% if consul_enable_gossip_encryption %}
 encrypt = "{{ consul_gossip_key.stdout }}"
