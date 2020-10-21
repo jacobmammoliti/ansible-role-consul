@@ -1,11 +1,3 @@
 server = true
 bootstrap_expect = {{ consul_server_count }}
 ui = {{ consul_ui | lower }}
-
-{% if consul_enable_acl %}
-acl {
-  enabled        = true
-  default_policy = "deny"
-  down_policy    = "extend-cache"
-}
-{% endif %}
