@@ -1,6 +1,6 @@
 datacenter = "{{ consul_datacenter }}"
-data_dir = "{{ consul_data_directory }}"
-node_name = "{{ ansible_hostname }}"
+data_dir   = "{{ consul_data_directory }}"
+node_name  = "{{ ansible_hostname }}"
 
 {% if consul_enable_gossip_encryption %}
 encrypt = "{{ consul_gossip_key.stdout }}"
@@ -15,11 +15,11 @@ acl {
 {% endif %}
 
 {% if consul_enable_tls %}
-ca_file = "{{ consul_tls_ca_file }}"
-cert_file = "{{ consul_tls_cert_file }}"
-key_file = "{{ consul_tls_key_file }}"
-verify_incoming = {{ consul_tls_verify_incoming | lower }}
-verify_outgoing = {{ consul_tls_verify_outgoing | lower }}
+ca_file                = "{{ consul_tls_directory }}/{{ consul_tls_ca_file | basename }}"
+cert_file              = "{{ consul_tls_directory }}/{{ consul_tls_cert_file | basename }}"
+key_file               = "{{ consul_tls_directory }}/{{ consul_tls_key_file | basename }}"
+verify_incoming        = {{ consul_tls_verify_incoming | lower }}
+verify_outgoing        = {{ consul_tls_verify_outgoing | lower }}
 verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
 {% endif %}
 
@@ -33,7 +33,8 @@ retry_join = [
 ]
 {% endif %}
 
-client_addr = "0.0.0.0"
+client_addr    = "0.0.0.0"
+advertise_addr = "{{ ansible_default_ipv4.address }}"
 
 performance {
   raft_multiplier = {{ consul_raft_multiplier }}

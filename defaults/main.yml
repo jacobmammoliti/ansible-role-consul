@@ -12,7 +12,7 @@ consul_install_directory: '{{ consul_data_directory }}/bin'
 consul_config_file: '{{ consul_home_directory }}/consul.hcl'
 consul_server_file: '{{ consul_home_directory }}/server.hcl'
 
-consul_version: '1.8.4'
+consul_version: '1.8.5'
 consul_archive: 'consul_{{ consul_version }}_linux_amd64.zip'
 consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}'
 
@@ -25,9 +25,10 @@ consul_ui: true
 consul_client_addr: '0.0.0.0'
 
 consul_enable_tls: false
-consul_tls_ca_file: '{{ consul_home_directory }}/tls/ca.pem'
-consul_tls_cert_file: '{{ consul_home_directory }}/tls/cert.pem'
-consul_tls_key_file: '{{ consul_home_directory }}/tls/key.pem'
+consul_tls_directory: '{{ consul_home_directory }}/tls'
+consul_tls_ca_file: 'tls/consul-agent-ca.pem'
+consul_tls_cert_file: 'tls/dc1-server-consul-0.pem'
+consul_tls_key_file: 'tls/dc1-server-consul-0-key.pem'
 consul_tls_verify_incoming: true
 consul_tls_verify_outgoing: true
 consul_tls_verify_server_hostname: true
