@@ -15,6 +15,8 @@ consul_server_file: '{{ consul_home_directory }}/server.hcl'
 consul_version: '1.8.5'
 consul_archive: 'consul_{{ consul_version }}_linux_amd64.zip'
 consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}'
+consul_local_binary: false
+consul_local_binary_location: 'binary/consul'
 
 consul_datacenter: 'dc1'
 consul_server_count: 3

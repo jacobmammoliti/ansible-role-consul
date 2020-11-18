@@ -33,7 +33,7 @@
   - '{{ consul_data_directory }}'
   - '{{ consul_install_directory }}'
 
-- name: installing consul binary
+- name: installing consul binary from remote
   unarchive:
     src: '{{ consul_download }}'
     dest: '{{ consul_install_directory }}'
@@ -43,6 +43,18 @@
     mode: '0770'
   notify:
     - restart consul
+  when: not consul_local_binary
+
+- name: installing consul binary from local
+  copy:
+    src: '{{ consul_local_binary_location }}'
+    dest: '{{ consul_install_directory }}/{{ consul_local_binary_location | basename }}'
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+    mode: '0770'
+  notify:
+    - restart consul
+  when: consul_local_binary
 
 - name: create TLS directory
   file:
