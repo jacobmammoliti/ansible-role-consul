@@ -5,6 +5,7 @@
     method: PUT
     status_code: 200
   register: bootstrap_token
+  run_once: yes
 
 - name: applying Consul agent policy
   uri:
@@ -15,6 +16,7 @@
     headers:
       X-Consul-Token: '{{ bootstrap_token.SecretID }}'
     status_code: 200
+  run_once: yes
 
 - name: applying Consul agent token
   uri:
@@ -26,11 +28,14 @@
       X-Consul-Token: '{{ bootstrap_token.SecretID }}'
     status_code: 200
   register: consul_agent_token
+  run_once: yes
 
 - name: outputting Consul boostrap token
   debug:
     msg: 'Consul Bootstrap token: {{ bootstrap_token.SecretID }}'
+  run_once: yes
 
 - name: outputting Consul agent token
   debug:
     msg: 'Consul Bootstrap token: {{ consul_agent_token.SecretID }}'
+  run_once: yes
