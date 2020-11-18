@@ -1,4 +1,8 @@
 ---
+- name: waiting for Consul cluster to come up before bootstrapping
+  pause:
+    seconds: 10
+
 - name: bootstrapping Consul cluster
   uri:
     url: http://{{ inventory_hostname }}:8500/v1/acl/bootstrap
@@ -14,7 +18,7 @@
     body_format: json
     method: PUT
     headers:
-      X-Consul-Token: '{{ bootstrap_token.SecretID }}'
+      X-Consul-Token: '{{ bootstrap_token.json.SecretID }}'
     status_code: 200
   run_once: yes
 
@@ -25,17 +29,26 @@
     body_format: json
     method: PUT
     headers:
-      X-Consul-Token: '{{ bootstrap_token.SecretID }}'
+      X-Consul-Token: '{{ bootstrap_token.json.SecretID }}'
     status_code: 200
   register: consul_agent_token
   run_once: yes
 
+- name: adding Consul agent token to all Consul nodes
+  blockinfile:
+    path: '{{ consul_config_file }}'
+    insertafter: 'down_policy'
+    block: |
+      tokens {
+        "agent" = "{{ consul_agent_token.json.SecretID }}"
+      }
+
 - name: outputting Consul boostrap token
   debug:
-    msg: 'Consul Bootstrap token: {{ bootstrap_token.SecretID }}'
+    msg: 'Consul Bootstrap token: {{ bootstrap_token.json.SecretID }}'
   run_once: yes
 
 - name: outputting Consul agent token
   debug:
-    msg: 'Consul Bootstrap token: {{ consul_agent_token.SecretID }}'
+    msg: 'Consul Bootstrap token: {{ consul_agent_token.json.SecretID }}'
   run_once: yes
