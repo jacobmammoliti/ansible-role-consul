@@ -1,0 +1,36 @@
+---
+- name: bootstrapping Consul cluster
+  uri:
+    url: http://{{ ansible_inventory }}:8500/v1/acl/bootstrap
+    method: PUT
+    status_code: 200
+  register: bootstrap_token
+
+- name: applying Consul agent policy
+  uri:
+    url: http://{{ ansible_inventory }}:8500/v1/acl/policy
+    body: '{{ lookup("file","agent-policy.json") }}'
+    body_format: json
+    method: PUT
+    headers:
+      X-Consul-Token: '{{ bootstrap_token.SecretID }}'
+    status_code: 200
+
+- name: applying Consul agent token
+  uri:
+    url: http://{{ ansible_inventory }}:8500/v1/acl/token
+    body: '{"Description": "Consul Agent Token", "Policies": [{ "Name": "agent-token" }]}'
+    body_format: json
+    method: PUT
+    headers:
+      X-Consul-Token: '{{ bootstrap_token.SecretID }}'
+    status_code: 200
+  register: consul_agent_token
+
+- name: outputting Consul boostrap token
+  debug:
+    msg: 'Consul Bootstrap token: {{ bootstrap_token.SecretID }}'
+
+- name: outputting Consul agent token
+  debug:
+    msg: 'Consul Bootstrap token: {{ consul_agent_token.SecretID }}'
