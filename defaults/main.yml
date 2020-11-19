@@ -36,3 +36,11 @@ consul_tls_key_file: 'tls/dc1-server-consul-0-key.pem'
 consul_tls_verify_incoming: true
 consul_tls_verify_outgoing: true
 consul_tls_verify_server_hostname: true
+
+consul_port_dns: 8600
+consul_port_http: 8500
+consul_port_https: -1
+consul_port_grpc: -1
+consul_port_serf_lan: 8301
+consul_port_serf_wan: 8302
+consul_port_server: 8300

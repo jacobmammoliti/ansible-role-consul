@@ -3,17 +3,27 @@
   pause:
     seconds: 10
 
-- name: bootstrapping Consul cluster
+- name: bootstrapping Consul cluster over http
   uri:
-    url: http://{{ inventory_hostname }}:8500/v1/acl/bootstrap
+    url: http://{{ inventory_hostname }}:{{ consul_port_http }}/v1/acl/bootstrap
     method: PUT
     status_code: 200
   register: bootstrap_token
   run_once: yes
+  when: consul_port_https == -1
 
-- name: applying Consul agent policy
+- name: bootstrapping Consul cluster over https
   uri:
-    url: http://{{ inventory_hostname }}:8500/v1/acl/policy
+    url: https://{{ inventory_hostname }}:{{ consul_port_https }}/v1/acl/bootstrap
+    method: PUT
+    status_code: 200
+  register: bootstrap_token
+  run_once: yes
+  when: consul_port_https != -1
+
+- name: applying Consul agent policy over http
+  uri:
+    url: http://{{ inventory_hostname }}:{{ consul_port_http }}/v1/acl/policy
     body: '{{ lookup("file","agent-policy.json") }}'
     body_format: json
     method: PUT
@@ -21,10 +31,23 @@
       X-Consul-Token: '{{ bootstrap_token.json.SecretID }}'
     status_code: 200
   run_once: yes
+  when: consul_port_https == -1
 
-- name: applying Consul agent token
+- name: applying Consul agent policy over https
   uri:
-    url: http://{{ inventory_hostname }}:8500/v1/acl/token
+    url: https://{{ inventory_hostname }}:{{ consul_port_https }}/v1/acl/policy
+    body: '{{ lookup("file","agent-policy.json") }}'
+    body_format: json
+    method: PUT
+    headers:
+      X-Consul-Token: '{{ bootstrap_token.json.SecretID }}'
+    status_code: 200
+  run_once: yes
+  when: consul_port_https != -1
+
+- name: applying Consul agent token over http
+  uri:
+    url: http://{{ inventory_hostname }}:{{ consul_port_http }}/v1/acl/token
     body: '{"Description": "Consul Agent Token", "Policies": [{ "Name": "agent-token" }]}'
     body_format: json
     method: PUT
@@ -33,6 +56,20 @@
     status_code: 200
   register: consul_agent_token
   run_once: yes
+  when: consul_port_https == -1
+
+- name: applying Consul agent token over http
+  uri:
+    url: https://{{ inventory_hostname }}:{{ consul_port_https }}/v1/acl/token
+    body: '{"Description": "Consul Agent Token", "Policies": [{ "Name": "agent-token" }]}'
+    body_format: json
+    method: PUT
+    headers:
+      X-Consul-Token: '{{ bootstrap_token.json.SecretID }}'
+    status_code: 200
+  register: consul_agent_token
+  run_once: yes
+  when: consul_port_https != -1
 
 - name: adding Consul agent token to all Consul nodes
   blockinfile:

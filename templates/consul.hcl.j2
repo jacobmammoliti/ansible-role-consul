@@ -28,6 +28,16 @@ verify_outgoing        = {{ consul_tls_verify_outgoing | lower }}
 verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
 {% endif %}
 
+ports {
+  dns      = {{ consul_port_dns }}
+  http     = {{ consul_port_http }}
+  https    = {{ consul_port_https }}
+  grpc     = {{ consul_port_grpc }}
+  serf_lan = {{ consul_port_serf_lan }}
+  serf_wan = {{ consul_port_serf_wan }}
+  server   = {{ consul_port_server }}
+}
+
 {% if provider == 'gce' %}
 retry_join = ["provider=gce tag_value={{ consul_cloud_tag }}"]
 {% elif provider == 'no_cloud'%}
