@@ -1,10 +1,21 @@
 ---
-- name: installing consul dependencies
-  package:
+- name: installing consul dependencies via yum
+  yum:
     name:
       - unzip
       - curl
     state: present
+    update_cache: yes
+  when: ansible_pkg_mgr == 'yum'
+
+- name: installing consul dependencies via apt
+  apt:
+    name:
+      - unzip
+      - curl
+    state: present
+    update_cache: yes
+  when: ansible_pkg_mgr == 'apt'
 
 - name: creating consul group
   group:
