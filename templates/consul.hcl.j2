@@ -42,8 +42,8 @@ ports {
 retry_join = ["provider=gce tag_value={{ consul_cloud_tag }}"]
 {% elif provider == 'no_cloud'%}
 retry_join = [
-{% for server in consul_server_list if not server == ansible_fqdn %}
-  "{{ server }}"{% if not loop.last %},{% endif %}{{''}}
+{% for consul_server in groups['consul'] %}
+  "{{ consul_server }}"{% if not loop.last %},{% endif %}{{''}}
 {% endfor %}
 ]
 {% endif %}

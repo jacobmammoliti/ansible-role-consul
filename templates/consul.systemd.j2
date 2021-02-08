@@ -10,9 +10,9 @@ Type=notify
 User=consul
 Group=consul
 ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_home_directory }}
-ExecReload={{ consul_install_directory }}/consul reload
-ExecStop={{ consul_install_directory }}/consul leave
+ExecReload=/bin/kill --signal HUP $MAINPID
 KillMode=process
+KillSignal=SIGTERM
 Restart=on-failure
 LimitNOFILE=65536
 
