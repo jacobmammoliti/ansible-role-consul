@@ -18,8 +18,8 @@ consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ 
 consul_local_binary: false
 consul_local_binary_location: 'binary/consul'
 
+consul_server: false
 consul_datacenter: 'dc1'
-consul_server_count: 3
 consul_enable_acl: false
 consul_run_bootstrap: false
 consul_bootstrapped: false

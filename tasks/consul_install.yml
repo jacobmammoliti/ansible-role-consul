@@ -108,7 +108,7 @@
     owner: '{{ consul_user }}'
     group: '{{ consul_group }}'
     mode: '0640'
-  when: "'servers' in group_names"
+  when: consul_server
   notify:
     - restart consul
 

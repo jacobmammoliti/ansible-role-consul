@@ -1,3 +1,3 @@
 server = true
-bootstrap_expect = {{ consul_server_count }}
+bootstrap_expect = {{ groups['consul'] | length }}
 ui = {{ consul_ui | lower }}
