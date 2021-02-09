@@ -7,8 +7,8 @@ ConditionFileNotEmpty={{ consul_config_file }}
 
 [Service]
 Type=notify
-User=consul
-Group=consul
+User={{ consul_user }}
+Group={{ consul_group }}
 ExecStart={{ consul_install_directory }}/consul agent -config-dir={{ consul_home_directory }}
 ExecReload=/bin/kill --signal HUP $MAINPID
 KillMode=process
