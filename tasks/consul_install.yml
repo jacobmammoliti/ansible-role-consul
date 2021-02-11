@@ -82,7 +82,7 @@
     dest: '{{ consul_tls_directory }}/{{ item | basename }}'
     owner: '{{ consul_user }}'
     group: '{{ consul_group }}'
-    mode: '0400'
+    mode: '0640'
   with_items:
     - '{{ consul_tls_ca_file }}'
     - '{{ consul_tls_cert_file }}'

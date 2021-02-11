@@ -4,7 +4,7 @@ node_name  = "{{ ansible_hostname }}"
 log_level  = "{{ consul_log_level }}"
 
 {% if consul_enable_gossip_encryption %}
-encrypt = "{{ consul_gossip_key.stdout }}"
+encrypt = "{{ consul_gossip_key }}"
 {% endif %}
 
 {% if consul_enable_acl %}
