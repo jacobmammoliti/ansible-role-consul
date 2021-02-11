@@ -12,11 +12,13 @@ consul_install_directory: '{{ consul_data_directory }}/bin'
 consul_config_file: '{{ consul_home_directory }}/consul.hcl'
 consul_server_file: '{{ consul_home_directory }}/server.hcl'
 
-consul_version: '1.8.5'
+consul_version: '1.9.2'
 consul_archive: 'consul_{{ consul_version }}_linux_amd64.zip'
 consul_download: 'https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}'
 consul_local_binary: false
 consul_local_binary_location: 'binary/consul'
+
+consul_log_level: 'INFO'
 
 consul_server: false
 consul_datacenter: 'dc1'

@@ -1,6 +1,7 @@
 datacenter = "{{ consul_datacenter }}"
 data_dir   = "{{ consul_data_directory }}"
 node_name  = "{{ ansible_hostname }}"
+log_level  = "{{ consul_log_level }}"
 
 {% if consul_enable_gossip_encryption %}
 encrypt = "{{ consul_gossip_key.stdout }}"
@@ -48,7 +49,7 @@ retry_join = [
 ]
 {% endif %}
 
-client_addr    = "0.0.0.0"
+client_addr    = "{{ consul_client_addr }}"
 advertise_addr = "{{ ansible_default_ipv4.address }}"
 
 performance {
