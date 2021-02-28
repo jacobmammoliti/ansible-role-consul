@@ -50,7 +50,7 @@ retry_join = [
 {% endif %}
 
 client_addr    = "{{ consul_client_addr }}"
-advertise_addr = "{{ ansible_default_ipv4.address }}"
+advertise_addr = "{{ consul_advertise_addr }}"
 
 performance {
   raft_multiplier = {{ consul_raft_multiplier }}

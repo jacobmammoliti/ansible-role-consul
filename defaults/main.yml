@@ -29,6 +29,7 @@ consul_enable_gossip_encryption: false
 consul_raft_multiplier: 1
 consul_ui: true
 consul_client_addr: '0.0.0.0'
+consul_advertise_addr: '{{ ansible_default_ipv4.address }}'
 
 consul_enable_tls: false
 consul_tls_directory: '{{ consul_home_directory }}/tls'
