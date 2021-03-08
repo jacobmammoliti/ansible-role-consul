@@ -1,24 +1,37 @@
 Ansible Role: Consul
 ===================
-
 A role to deploy a production grade [HashiCorp Consul](https://www.consul.io/).
-
-Requirements
-------------
-
-- Compute Admin role in a GCP Project
 
 Role Variables
 --------------
-
 Ansible variables are listed below, along with default values (see `defaults/main.yml`):
 
-Controls whether a separate account is created or not and what the user and group should be named.
-```yaml
-consul_user: 'consul'
-consul_group: 'consul'
-consul_create_account: true
-```
+> **NOTE**: The label for servers in the hosts inventory file must be `[consul]` as shown in the example. The role will not properly function if the label name is anything other value.
+
+### `provider`
+
+- Tells Consul where it is installed (useful if using `retry_join` based on Cloud tags)
+- Default value: no_cloud
+
+### `consul_cloud_tag`
+
+- Cloud tag Consul will use during `retry_join`
+- Default value: consul
+
+### `consul_user`
+
+- OS user
+- Default value: consul
+
+### `consul_group`
+
+- OS group
+- Default value: consul
+
+### `consul_create_account`
+
+- Whether to create the user and group defined by `consul_user` and `consul_group` or not
+- Default value: true
 
 Where to initialize Consul's home, data, and install directory.
 ```yaml
@@ -70,9 +83,9 @@ done
 ```
 
 Create an inventory file:
-```shell
-cat > inventory <<EOF
-[vault]
+```bash
+$ cat <<EOF > inventory
+[consul]
 consul-0.c.[PROJECT_ID].internal
 consul-1.c.[PROJECT_ID].internal
 consul-2.c.[PROJECT_ID].internal
@@ -80,31 +93,14 @@ EOF
 ```
 
 Create an Ansible playbook, calling the role:
-```shell
-cat > main.yaml <<EOF
+```bash
+$ cat <<EOF > site.yaml
 ---
-- hosts: servers, clients
+- hosts: consul
   become: yes
   roles:
     - role: ansible-role-consul
 EOF
-```
-
-Ensure Python is installed on the servers:
-```shell
-ansible -i inventory vault -m ping
-consul-0.c.[PROJECT_ID].internal | SUCCESS => {
-    "changed": false, 
-    "ping": "pong"
-}
-consul-2.c.[PROJECT_ID].internal | SUCCESS => {
-    "changed": false, 
-    "ping": "pong"
-}
-consul-1.c.[PROJECT_ID].internal | SUCCESS => {
-    "changed": false, 
-    "ping": "pong"
-}
 ```
 
 Run the Ansible playbook:
@@ -118,7 +114,7 @@ consul-2.c.[PROJECT_ID].internal : ok=11   changed=9    unreachable=0    failed=
 ```
 
 View Consul cluster:
-```shell
+```bash
 $ export CONSUL_HTTP_ADDR=http://consul-0.c.[PROJECT_ID].internal:8500
 
 $ consul members
