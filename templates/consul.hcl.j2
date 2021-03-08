@@ -3,11 +3,11 @@ data_dir   = "{{ consul_data_directory }}"
 node_name  = "{{ ansible_hostname }}"
 log_level  = "{{ consul_log_level }}"
 
-{% if consul_enable_gossip_encryption %}
+{% if consul_gossip_encryption_enabled %}
 encrypt = "{{ consul_gossip_key }}"
 {% endif %}
 
-{% if consul_enable_acl %}
+{% if consul_acl_enabled %}
 acl {
   enabled        = true
   default_policy = "deny"
@@ -20,7 +20,7 @@ acl {
 }
 {% endif %}
 
-{% if consul_enable_tls %}
+{% if consul_tls_enabled %}
 ca_file                = "{{ consul_tls_directory }}/{{ consul_tls_ca_file | basename }}"
 cert_file              = "{{ consul_tls_directory }}/{{ consul_tls_cert_file | basename }}"
 key_file               = "{{ consul_tls_directory }}/{{ consul_tls_key_file | basename }}"
@@ -28,6 +28,11 @@ verify_incoming        = {{ consul_tls_verify_incoming | lower }}
 verify_outgoing        = {{ consul_tls_verify_outgoing | lower }}
 verify_server_hostname = {{ consul_tls_verify_server_hostname | lower }}
 {% endif %}
+
+{% if consul_tls_cipher_suites is defined %}
+tls_cipher_suites = "{{ consul_tls_cipher_suites }}"
+{% endif %}
+tls_min_version = "{{ consul_tls_min_version }}"
 
 ports {
   dns      = {{ consul_port_dns }}
