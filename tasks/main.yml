@@ -2,6 +2,6 @@
 - name: installing consul
   include: consul_install.yml
 
-- name: bootstrapping consul
-  include: consul_bootstrap.yml
-  when: consul_run_bootstrap
+# - name: bootstrapping consul
+#   include: consul_bootstrap.yml
+#   when: consul_run_bootstrap

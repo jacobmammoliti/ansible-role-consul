@@ -6,16 +6,10 @@ Vagrant.configure("2") do |config|
     consulserver.vm.hostname = "consul-server"
   end
 
-  config.vm.define "consulclient" do |consulclient|
-    consulclient.vm.box = "bento/ubuntu-18.04"
-    consulclient.vm.hostname = "consul-client"
-  end
-
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "site.yaml"
+    ansible.playbook = "site.yml"
     ansible.groups = {
-      "clients" => ["consulclient"],
-      "servers" => ["consulserver"]
+      "consul" => ["consulclient"]
     }
   end
 end
