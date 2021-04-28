@@ -12,7 +12,7 @@ acl {
   enabled        = true
   default_policy = "deny"
   down_policy    = "extend-cache"
-{% if consul_bootstrapped %}
+{% if consul_acl_agent_token is defined %}
   tokens {
     "agent" = "{{ consul_acl_agent_token }}"
   }

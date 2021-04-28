@@ -32,7 +32,6 @@ consul_server: false
 consul_datacenter: 'dc1'
 consul_acl_enabled: false
 consul_run_bootstrap: false
-consul_bootstrapped: false
 consul_gossip_encryption_enabled: false
 consul_raft_multiplier: 1
 consul_ui: true

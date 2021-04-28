@@ -103,11 +103,6 @@ Ansible variables are listed below, along with default values (see `defaults/mai
 - Whether ACLs are enabled or not
 - Default value: false
 
-### `consul_bootstrapped`
-
-- Whether ACLs are bootstrapped or not
-- Default value: false
-
 ### `consul_gossip_encryption_enabled`
 
 - Whether Gossip encryption is enabled or not
