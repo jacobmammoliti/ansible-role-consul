@@ -3,7 +3,7 @@ data_dir   = "{{ consul_data_directory }}"
 node_name  = "{{ ansible_hostname }}"
 log_level  = "{{ consul_log_level }}"
 
-{% if consul_gossip_encryption_enabled %}
+{% if consul_gossip_key is defined %}
 encrypt = "{{ consul_gossip_key }}"
 {% endif %}
 
